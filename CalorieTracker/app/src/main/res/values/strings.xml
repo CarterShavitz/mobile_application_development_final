@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">CalorieTracker</string>
+    <string name="calorie_tracker">Calorie Tracker</string>
+    <string name="add_food">Add Food</string>
+    <string name="add_exercise">Add Exercise</string>
+    <string name="calories_consumed">Calories Consumed:</string>
+    <string name="_0">0</string>
 </resources>
