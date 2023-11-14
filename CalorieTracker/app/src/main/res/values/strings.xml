@@ -2,7 +2,18 @@
     <string name="app_name">CalorieTracker</string>
     <string name="calorie_tracker">Calorie Tracker</string>
     <string name="add_food">Add Food</string>
+    <string name="add_unique_food">Add Unique Food</string>
     <string name="add_exercise">Add Exercise</string>
     <string name="calories_consumed">Calories Consumed:</string>
+    <string name = "enter_serving_size">Serving Size:</string>
+    <string name = "enter_calorie_count">Calorie Count:</string>
+    <string name = "enter_food_name">Food Name:</string>
+    <string name = "add_food_button">Add Food</string>
+    <string name = "go_back">Go Back</string>
+    <string name = "add_unique_exercise">Add Unique Exercise</string>
+    <string name = "enter_exercise_name">Enter Exercise</string>
+    <string name = "enter_calories_burned">Enter Calories Burned</string>
+    <string name = "enter_duration">Enter Duration</string>
+    <string name = "add_exercise_button">Add Exercise</string>
     <string name="_0">0</string>
 </resources>

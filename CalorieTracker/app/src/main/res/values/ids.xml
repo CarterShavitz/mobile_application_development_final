@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="fragment_container" type="id"/>
+    <item name="details_fragment" type="id"/>
+    <item name="add_food_fragment" type="id"/>
+    <item name="add_unique_food_fragment" type="id"/>
+    <item name="add_exercise_fragment" type="id"/>
+    <item name="add_unique_exercise_fragment" type="id"/>
+</resources>

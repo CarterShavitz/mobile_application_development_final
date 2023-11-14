@@ -4,10 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:orientation="horizontal">
+
+    <!-- Container for details_fragment and fragments -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Placeholder for details_fragment (FrontFragment) -->
     <fragment
         android:id="@+id/details_fragment"
         class="edu.msoe.calorietracker.FrontFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-    </LinearLayout>
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible" />
+
+    <!-- Placeholder for AddFoodFragment -->
+    <fragment
+        android:id="@+id/add_food_fragment"
+        class="edu.msoe.calorietracker.AddFoodFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+    <!-- Placeholder for AddUniqueFoodFragment -->
+    <fragment
+        android:id="@+id/add_unique_food_fragment"
+        class="edu.msoe.calorietracker.AddUniqueFoodFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+    <!-- Placeholder for AddExerciseFragment -->
+    <fragment
+        android:id="@+id/add_exercise_fragment"
+        class="edu.msoe.calorietracker.AddExerciseFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+    <!-- Placeholder for AddUniqueExerciseFragment -->
+    <fragment
+        android:id="@+id/add_unique_exercise_fragment"
+        class="edu.msoe.calorietracker.AddUniqueExerciseFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+</LinearLayout>

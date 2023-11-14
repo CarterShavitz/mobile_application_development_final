@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="common_foods">
+        <item>Food 1</item>
+        <item>Food 2</item>
+        <item>Food 3</item>
+    </array>
+    <array name="common_exercises">
+        <item>Food 1</item>
+        <item>Food 2</item>
+        <item>Food 3</item>
+    </array>
+</resources>
