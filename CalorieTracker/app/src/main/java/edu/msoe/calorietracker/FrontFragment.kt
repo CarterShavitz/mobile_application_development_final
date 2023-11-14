@@ -28,4 +28,8 @@ class FrontFragment : Fragment() {
         return view
     }
 
+    interface OnFrontFragmentInteractionListener {
+        fun onFrontFragmentInteraction()
+    }
+
 }
