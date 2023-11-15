@@ -1,10 +1,11 @@
 package edu.msoe.calorietracker
 
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity(),
-    FrontFragment.OnFrontFragmentInteractionListener,
+    FrontFragment.OnFragmentInteractionListener,
     AddExerciseFragment.OnFragmentInteractionListener,
     AddFoodFragment.OnFragmentInteractionListener,
     AddUniqueExerciseFragment.OnFragmentInteractionListener,
@@ -24,19 +25,31 @@ class MainActivity : AppCompatActivity(),
     // Implement the interface methods for all fragments
 
     // FrontFragment
-    override fun onFrontFragmentInteraction() {
-        // Handle interaction from FrontFragment if needed
+    override fun onGoToAddFoodButtonClick() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, AddFoodFragment.newInstance(), "addFood")
+            .commit()
+    }
+
+    override fun onGoToAddExerciseButtonClick() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, AddExerciseFragment.newInstance(), "addExercise")
+            .commit()
     }
 
     // AddExerciseFragment
     override fun onGoToUniqueExerciseButtonClick() {
-        // Handle interaction from AddExerciseFragment if needed
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, AddUniqueExerciseFragment.newInstance(), "addUniqueExercise")
+            .commit()
     }
 
 
     // AddFoodFragment
     override fun onGoToUniqueFoodButtonClick() {
-        // Handle interaction from AddFoodFragment if needed
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, AddUniqueFoodFragment.newInstance(), "addUniqueFood")
+            .commit()
     }
 
     // AddUniqueExerciseFragment
@@ -50,7 +63,21 @@ class MainActivity : AppCompatActivity(),
         // Handle interaction from AddUniqueFoodFragment if needed
     }
 
-    override fun onGoBackButtonClick() {
-        // Handle interaction from AddUniqueFoodFragment if needed
+    override fun onGoBackFoodButtonClick() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, AddFoodFragment.newInstance(), "goBackFood")
+            .commit()
+    }
+
+    override fun onGoBackExerciseButtonClick() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, AddExerciseFragment.newInstance(), "goBackExercise")
+            .commit()
+    }
+
+    override fun onGoBackHomeButtonClick() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, FrontFragment.newInstance(), "goBackHome")
+            .commit()
     }
 }

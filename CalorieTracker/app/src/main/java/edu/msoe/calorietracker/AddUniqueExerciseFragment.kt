@@ -20,7 +20,7 @@ class AddUniqueExerciseFragment : Fragment() {
     // Interface to handle button clicks
     interface OnFragmentInteractionListener {
         fun onAddExerciseButtonClick(exerciseName: String, calorieBurned: String, duration: String)
-        fun onGoBackButtonClick()
+        fun onGoBackExerciseButtonClick()
     }
 
     private var listener: OnFragmentInteractionListener? = null
@@ -58,7 +58,7 @@ class AddUniqueExerciseFragment : Fragment() {
         }
 
         goBackButton.setOnClickListener {
-            listener?.onGoBackButtonClick()
+            listener?.onGoBackExerciseButtonClick()
         }
 
         return view

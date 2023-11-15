@@ -20,7 +20,7 @@ class AddUniqueFoodFragment : Fragment() {
     // Interface to handle button clicks
     interface OnFragmentInteractionListener {
         fun onAddFoodButtonClick(foodName: String, calorieCount: String, servingSize: String)
-        fun onGoBackButtonClick()
+        fun onGoBackFoodButtonClick()
     }
 
     private var listener: OnFragmentInteractionListener? = null
@@ -58,7 +58,7 @@ class AddUniqueFoodFragment : Fragment() {
         }
 
         goBackButton.setOnClickListener {
-            listener?.onGoBackButtonClick()
+            listener?.onGoBackFoodButtonClick()
         }
 
         return view
