@@ -15,5 +15,16 @@
     <string name = "enter_calories_burned">Enter Calories Burned</string>
     <string name = "enter_duration">Enter Duration</string>
     <string name = "add_exercise_button">Add Exercise</string>
+    <string name = "bmi_title">BMI Calculator</string>
+    <string name = "enter_age">Age:</string>
+    <string name = "gender_label">Gender:</string>
+    <string name = "male">Male</string>
+    <string name = "female">Female</string>
+    <string name = "height_label">Height: </string>
+    <string name = "enter_feet">Feet: </string>
+    <string name = "enter_inches">Inches: </string>
+    <string name = "enter_weight">Weight: </string>
+    <string name = "activity_label">Activity: </string>
+    <string name = "calculate_bmi">Calculate BMI </string>
     <string name="_0">0</string>
 </resources>

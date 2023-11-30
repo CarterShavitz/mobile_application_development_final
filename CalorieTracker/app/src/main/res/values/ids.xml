@@ -6,4 +6,6 @@
     <item name="add_unique_food_fragment" type="id"/>
     <item name="add_exercise_fragment" type="id"/>
     <item name="add_unique_exercise_fragment" type="id"/>
+    <item name="bmi_title" type="id"/>
+    <item name="age_edit_text" type="id"/>
 </resources>
