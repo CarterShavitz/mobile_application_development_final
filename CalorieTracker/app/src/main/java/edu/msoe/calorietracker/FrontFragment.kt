@@ -20,6 +20,7 @@ class FrontFragment : Fragment() {
     interface OnFragmentInteractionListener {
         fun onGoToAddExerciseButtonClick()
         fun onGoToAddFoodButtonClick()
+        fun onGoToBMIPageButtonClick()
     }
 
     private var listener: OnFragmentInteractionListener? = null
@@ -33,12 +34,11 @@ class FrontFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_front_details, container, false)
         val addFoodButton: Button = view.findViewById(R.id.add_food_btn)
         val addExerciseButton: Button = view.findViewById(R.id.add_exercise_btn)
+        val addBMIButton: Button = view.findViewById(R.id.go_to_bmi_page)
 
         addFoodButton.setOnClickListener {
             listener?.onGoToAddFoodButtonClick()
@@ -47,7 +47,13 @@ class FrontFragment : Fragment() {
         addExerciseButton.setOnClickListener {
             listener?.onGoToAddExerciseButtonClick()
         }
+
+        addBMIButton.setOnClickListener {
+            listener?.onGoToBMIPageButtonClick()
+        }
+
         return view
     }
+
 
 }

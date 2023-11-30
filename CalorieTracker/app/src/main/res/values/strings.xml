@@ -26,5 +26,6 @@
     <string name = "enter_weight">Weight: </string>
     <string name = "activity_label">Activity: </string>
     <string name = "calculate_bmi">Calculate BMI </string>
+    <string name = "add_bmi">Add BMI </string>
     <string name="_0">0</string>
 </resources>

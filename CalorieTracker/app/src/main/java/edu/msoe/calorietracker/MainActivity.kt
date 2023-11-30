@@ -37,6 +37,11 @@ class MainActivity : AppCompatActivity(),
             .commit()
     }
 
+    override fun onGoToBMIPageButtonClick() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, BMIFragment.newInstance(), "bmiFragment")
+            .commit()
+    }
     // AddExerciseFragment
     override fun onGoToUniqueExerciseButtonClick() {
         supportFragmentManager.beginTransaction()
