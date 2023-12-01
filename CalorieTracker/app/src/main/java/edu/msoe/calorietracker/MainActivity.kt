@@ -9,7 +9,8 @@ class MainActivity : AppCompatActivity(),
     AddExerciseFragment.OnFragmentInteractionListener,
     AddFoodFragment.OnFragmentInteractionListener,
     AddUniqueExerciseFragment.OnFragmentInteractionListener,
-    AddUniqueFoodFragment.OnFragmentInteractionListener {
+    AddUniqueFoodFragment.OnFragmentInteractionListener,
+    BMIFragment.OnFragmentInteractionListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

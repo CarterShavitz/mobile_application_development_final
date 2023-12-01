@@ -54,4 +54,12 @@
         android:layout_height="0dp"
         android:visibility="gone" />
 
+    <!-- Placeholder for BMI Fragment -->
+    <fragment
+        android:id="@+id/bmi_fragment"
+        class="edu.msoe.calorietracker.BMIFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
 </LinearLayout>

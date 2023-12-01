@@ -27,5 +27,6 @@
     <string name = "activity_label">Activity: </string>
     <string name = "calculate_bmi">Calculate BMI </string>
     <string name = "add_bmi">Add BMI </string>
+    <string name="bmi_result">BMI: %s</string>
     <string name="_0">0</string>
 </resources>

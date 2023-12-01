@@ -146,4 +146,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/go_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        android:text="Go Back"
+        app:layout_constraintTop_toBottomOf="@+id/go_to_calorie_tracking_page"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:onClick="onGoBackHomeButtonClick" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
