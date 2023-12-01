@@ -21,7 +21,6 @@ import kotlinx.coroutines.withContext
 
 class AddFoodFragment : Fragment() {
 
-    private val viewModel: ViewModel by viewModels()
 
     companion object {
         fun newInstance(): AddFoodFragment {
@@ -52,6 +51,7 @@ class AddFoodFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.add_food_page, container, false)
+        val viewModel: ViewModel by viewModels()
 
         // Find buttons by their IDs
         val goToUniqueFoodButton: Button = view.findViewById(R.id.go_to_unique_food_button)
@@ -82,8 +82,9 @@ class AddFoodFragment : Fragment() {
                         id: Long
                     ) {
 
-                        val selectedItem = foods[position]
-                        
+                        val food = foods[position]
+                        food.calories
+
 
                     }
 

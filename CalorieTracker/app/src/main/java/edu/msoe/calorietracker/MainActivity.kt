@@ -1,6 +1,7 @@
 package edu.msoe.calorietracker
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
@@ -20,6 +21,8 @@ class MainActivity : AppCompatActivity(),
                 .add(R.id.container, FrontFragment.newInstance(), "frontFragment")
                 .commit()
         }
+        Log.d("main", "Initialize repo")
+        Repository.initialize(this)
     }
 
     // Implement the interface methods for all fragments

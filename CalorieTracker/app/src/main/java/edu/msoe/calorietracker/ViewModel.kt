@@ -14,6 +14,7 @@ import java.util.UUID
 import kotlin.coroutines.CoroutineContext
 
 class ViewModel : ViewModel(){
+
     private val repository = Repository.get()
     var foods = repository.getFoods()
     var exercises = repository.getExercises()
@@ -21,5 +22,8 @@ class ViewModel : ViewModel(){
     val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
+    suspend fun addFood(food: Food) {
+        repository.addFood(food)
+    }
 
 }

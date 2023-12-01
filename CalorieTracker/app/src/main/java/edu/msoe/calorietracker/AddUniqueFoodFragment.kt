@@ -2,12 +2,23 @@ package edu.msoe.calorietracker
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
+import androidx.fragment.app.viewModels
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.UUID
 
 class AddUniqueFoodFragment : Fragment() {
 
@@ -40,6 +51,7 @@ class AddUniqueFoodFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.add_unique_food, container, false)
+        val viewModel: ViewModel by viewModels()
 
         // Find views by their IDs
         val foodNameEditText: EditText = view.findViewById(R.id.food_name_edit_text)
@@ -53,8 +65,20 @@ class AddUniqueFoodFragment : Fragment() {
             val foodName = foodNameEditText.text.toString()
             val calorieCount = calorieCountEditText.text.toString()
             val servingSize = servingSizeEditText.text.toString()
+            Log.d("UniqueFood", "add food clicked")
 
             listener?.onAddFoodButtonClick(foodName, calorieCount, servingSize)
+
+            CoroutineScope(Dispatchers.IO).launch {
+                val foods = viewModel.foods.toList()[0]
+                Log.d("UniqueFood", "Start coroutine")
+
+                withContext(Dispatchers.Main) {
+                    val foodToAdd = Food(UUID.fromString(foods.size.toString()), foodName, calorieCount.toInt(), servingSize.toInt())
+                    Log.d("UniqueFood", foodToAdd.name)
+                    viewModel.addFood(foodToAdd)
+                }
+            }
         }
 
         goBackButton.setOnClickListener {
