@@ -158,5 +158,17 @@
         app:layout_constraintStart_toStartOf="parent"
         android:onClick="onGoBackHomeButtonClick" />
 
+    <!-- TextView to display BMI -->
+    <TextView
+        android:id="@+id/bmi_result_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/go_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

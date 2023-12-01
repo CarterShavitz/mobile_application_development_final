@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity(),
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .add(R.id.container, FrontFragment.newInstance(), "frontFragment")
+                .addToBackStack(null)  // Add to back stack to handle popBackStack
                 .commit()
         }
     }
@@ -86,4 +87,12 @@ class MainActivity : AppCompatActivity(),
             .replace(R.id.container, FrontFragment.newInstance(), "goBackHome")
             .commit()
     }
+
+    override fun onBMICalculated(bmi: Double) {
+        // Display the BMI result in the BMIFragment
+        val bmiFragment = supportFragmentManager.findFragmentByTag("bmiFragment") as BMIFragment?
+        bmiFragment?.displayBMIResult(bmi)
+    }
+
+
 }
