@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import kotlin.math.pow
 
@@ -57,34 +58,88 @@ class BMIFragment : Fragment() {
             calculateBMI()
         }
 
+        // Clear BMI result initially
+        clearBMIResult()
+
         return view
+    }
+
+    private fun clearBMIResult() {
+        bmiResultTextView.text = ""
     }
 
     private fun calculateBMI() {
         // Retrieve user input
-        val weight: Double =
-            view?.findViewById<EditText>(R.id.weight_edit_text)?.text.toString().toDoubleOrNull()
-                ?: return // Return if weight is not a valid double
-        val heightFeet: Double =
-            view?.findViewById<EditText>(R.id.height_feet_edit_text)?.text.toString().toDoubleOrNull()
-                ?: return // Return if heightFeet is not a valid double
-        val heightInches: Double =
-            view?.findViewById<EditText>(R.id.height_inches_edit_text)?.text.toString()
-                .toDoubleOrNull()
-                ?: return // Return if heightInches is not a valid double
+        val weightEditText = view?.findViewById<EditText>(R.id.weight_edit_text)
+        val heightFeetEditText = view?.findViewById<EditText>(R.id.height_feet_edit_text)
+        val heightInchesEditText = view?.findViewById<EditText>(R.id.height_inches_edit_text)
+
+        val weightStr = weightEditText?.text.toString()
+        val heightFeetStr = heightFeetEditText?.text.toString()
+        val heightInchesStr = heightInchesEditText?.text.toString()
+
+        // Check if any of the input fields is empty
+        if (weightStr.isEmpty() && heightFeetStr.isEmpty() && heightInchesStr.isEmpty()) {
+            showToast("Please enter both weight and height.")
+            clearBMIResult() // Clear BMI result
+            return
+        }
+
+        val weight: Double = weightStr.toDoubleOrNull() ?: run {
+            if (weightStr.isEmpty()) {
+                showToast("Please enter weight.")
+            } else {
+                showToast("Please enter a valid weight.")
+            }
+            clearBMIResult() // Clear BMI result
+            return
+        }
+
+        val heightFeet: Double = heightFeetStr.toDoubleOrNull() ?: run {
+            showToast("Please enter a valid height (feet).")
+            clearBMIResult() // Clear BMI result
+            return
+        }
+
+        val heightInches: Double = heightInchesStr.toDoubleOrNull() ?: run {
+            showToast("Please enter a valid height (inches).")
+            clearBMIResult() // Clear BMI result
+            return
+        }
+
+        // Check for negative values
+        if (weight < 0 || heightFeet < 0 || heightInches < 0) {
+            showToast("Please enter non-negative values for weight and height.")
+            clearBMIResult() // Clear BMI result
+            return
+        }
 
         // Calculate BMI using the formula: weight (lb) / [height (in)]^2 x 703
         val heightInInches = (heightFeet * 12) + heightInches
         val bmi = (weight / (heightInInches.pow(2))) * 703
 
+        // Check if BMI is negative
+        if (bmi < 0) {
+            showToast("Invalid BMI calculation. Please check your input values.")
+            clearBMIResult() // Clear BMI result
+            return
+        }
+
         // Pass the calculated BMI to the listener
         listener?.onBMICalculated(bmi)
+    }
+
+    private fun showToast(message: String) {
+        context?.let {
+            Toast.makeText(it, message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun displayBMIResult(bmi: Double) {
         val roundedBMI = String.format("%.2f", bmi)
         bmiResultTextView.text = getString(R.string.bmi_result, "$roundedBMI (${interpretBMI(bmi)})")
     }
+
     private fun interpretBMI(bmi: Double): String {
         return when {
             bmi < 18.5 -> "Underweight"
