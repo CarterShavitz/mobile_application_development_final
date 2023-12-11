@@ -28,5 +28,6 @@
     <string name = "calculate_bmi">Calculate BMI </string>
     <string name = "add_bmi">Add BMI </string>
     <string name="bmi_result">BMI: %s</string>
+    <string name="calorie_recom"> View Calorie Recommendations</string>
     <string name="_0">0</string>
 </resources>
