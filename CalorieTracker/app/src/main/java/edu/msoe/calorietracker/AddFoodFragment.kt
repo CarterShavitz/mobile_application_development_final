@@ -2,6 +2,7 @@ package edu.msoe.calorietracker
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import kotlinx.coroutines.withContext
 
 class AddFoodFragment : Fragment() {
 
+    private val viewModel: ViewModel by viewModels()
 
     companion object {
         fun newInstance(): AddFoodFragment {
@@ -51,7 +53,6 @@ class AddFoodFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.add_food_page, container, false)
-        val viewModel: ViewModel by viewModels()
 
         // Find buttons by their IDs
         val goToUniqueFoodButton: Button = view.findViewById(R.id.go_to_unique_food_button)
@@ -67,36 +68,53 @@ class AddFoodFragment : Fragment() {
         }
 
         CoroutineScope(Dispatchers.IO).launch {
-            val foods = viewModel.foods.toList()[0]
+            Log.d("Food", "Start coroutine")
 
-            withContext(Dispatchers.Main) {
-                val spinner: Spinner = view.findViewById(R.id.common_foods_spinner)
-                val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, foods)
-                spinner.adapter = adapter
-
-                spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-
-                        val food = foods[position]
-                        food.calories
-
-
+            var foods: List<Food> = emptyList()
+            viewModel.foods.collect { foodList ->
+                foods = foodList
+                val foodNames = ArrayList<String>()
+                withContext(Dispatchers.Main) {
+                    Log.d("Food", "Main context")
+                    for (food: Food in foods) {
+                        foodNames.add(food.name)
                     }
+                    if (isAdded) {
+                        val spinner: Spinner = view.findViewById(R.id.common_foods_spinner)
+                        val adapter = ArrayAdapter(
+                            requireContext(),
+                            android.R.layout.simple_spinner_item,
+                            foodNames
+                        )
+                        spinner.adapter = adapter
 
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        // Do nothing
+                        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(
+                                parent: AdapterView<*>?,
+                                view: View?,
+                                position: Int,
+                                id: Long
+                            ) {
+
+                                val food = foods[position]
+                                food.calories
+
+
+                            }
+
+                            override fun onNothingSelected(parent: AdapterView<*>?) {
+                                // Do nothing
+                            }
+                        }
+
+                    } else {
+                        Log.d("Food", "Fragment not attached yet, delay")
                     }
-
                 }
             }
 
-        }
 
+        }
         return view
     }
 }

@@ -21,8 +21,6 @@ class MainActivity : AppCompatActivity(),
                 .add(R.id.container, FrontFragment.newInstance(), "frontFragment")
                 .commit()
         }
-        Log.d("main", "Initialize repo")
-        Repository.initialize(this)
     }
 
     // Implement the interface methods for all fragments

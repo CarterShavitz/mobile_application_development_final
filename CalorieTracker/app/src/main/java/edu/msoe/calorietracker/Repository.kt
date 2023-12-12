@@ -46,7 +46,7 @@ class Repository private constructor(
 
         fun get(): Repository {
             return INSTANCE?:
-            throw IllegalStateException("FoodRepository must be initialized")
+            throw IllegalStateException("Repository must be initialized")
         }
     }
 }

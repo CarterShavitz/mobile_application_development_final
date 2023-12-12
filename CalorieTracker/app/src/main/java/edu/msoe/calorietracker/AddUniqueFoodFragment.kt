@@ -15,12 +15,20 @@ import android.widget.Spinner
 import androidx.fragment.app.viewModels
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 import java.util.UUID
 
 class AddUniqueFoodFragment : Fragment() {
+
+    private val viewModel: ViewModel by viewModels()
+    private var foodsCoroutine: Job? = null
+
 
     companion object {
         fun newInstance(): AddUniqueFoodFragment {
@@ -51,7 +59,6 @@ class AddUniqueFoodFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.add_unique_food, container, false)
-        val viewModel: ViewModel by viewModels()
 
         // Find views by their IDs
         val foodNameEditText: EditText = view.findViewById(R.id.food_name_edit_text)
@@ -61,6 +68,7 @@ class AddUniqueFoodFragment : Fragment() {
         val goBackButton: Button = view.findViewById(R.id.go_back)
 
         // Set click listeners for the buttons
+
         addFoodButton.setOnClickListener {
             val foodName = foodNameEditText.text.toString()
             val calorieCount = calorieCountEditText.text.toString()
@@ -70,14 +78,10 @@ class AddUniqueFoodFragment : Fragment() {
             listener?.onAddFoodButtonClick(foodName, calorieCount, servingSize)
 
             CoroutineScope(Dispatchers.IO).launch {
-                val foods = viewModel.foods.toList()[0]
                 Log.d("UniqueFood", "Start coroutine")
-
-                withContext(Dispatchers.Main) {
-                    val foodToAdd = Food(UUID.fromString(foods.size.toString()), foodName, calorieCount.toInt(), servingSize.toInt())
-                    Log.d("UniqueFood", foodToAdd.name)
-                    viewModel.addFood(foodToAdd)
-                }
+                val foodToAdd = Food(UUID.randomUUID(), foodName, calorieCount.toInt(), servingSize.toInt())
+                Log.d("UniqueFood", foodToAdd.name)
+                viewModel.addFood(foodToAdd)
             }
         }
 
