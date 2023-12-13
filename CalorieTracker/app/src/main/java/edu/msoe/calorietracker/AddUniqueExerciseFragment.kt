@@ -2,14 +2,24 @@ package edu.msoe.calorietracker
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.UUID
 
 class AddUniqueExerciseFragment : Fragment() {
+
+    private val viewModel: ViewModel by viewModels()
 
     companion object {
         fun newInstance(): AddUniqueExerciseFragment {
@@ -55,6 +65,15 @@ class AddUniqueExerciseFragment : Fragment() {
             val duration = durationEditText.text.toString()
 
             listener?.onAddExerciseButtonClick(exerciseName, calorieBurned, duration)
+
+            CoroutineScope(Dispatchers.IO).launch {
+                Log.d("UniqueExercise", "Start coroutine")
+                val exerciseToAdd = Exercise(UUID.randomUUID(), exerciseName, calorieBurned.toInt(), duration.toInt())
+                Log.d("UniqueExercise", exerciseToAdd.name)
+                viewModel.addExercise(exerciseToAdd)
+                Looper.prepare()
+                Toast.makeText(requireContext(), "Exercise added: " + exerciseToAdd.name, Toast.LENGTH_SHORT).show()
+            }
         }
 
         goBackButton.setOnClickListener {
