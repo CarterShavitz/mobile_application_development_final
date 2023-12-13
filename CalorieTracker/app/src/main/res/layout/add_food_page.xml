@@ -39,10 +39,20 @@
 
 
     <Button
-        android:id="@+id/go_back"
+        android:id="@+id/add_food"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/go_to_unique_food_button"
+        android:layout_marginTop="20dp"
+        android:text="Add Food"
+        android:layout_centerHorizontal="true"
+        android:onClick="onGoBackButtonClick" />
+
+    <Button
+        android:id="@+id/go_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_food"
         android:layout_marginTop="20dp"
         android:text="Go Back"
         android:layout_centerHorizontal="true"

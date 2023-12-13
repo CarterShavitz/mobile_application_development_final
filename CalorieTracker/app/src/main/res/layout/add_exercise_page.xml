@@ -37,12 +37,21 @@
         android:layout_centerHorizontal="true"
         android:onClick="onGoToUniqueExerciseButtonClick" />
 
+    <Button
+        android:id="@+id/add_exercise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/go_to_unique_exercise_button"
+        android:layout_marginTop="20dp"
+        android:text="Add Exercise"
+        android:layout_centerHorizontal="true"
+        android:onClick="onGoBackButtonClick" />
 
     <Button
         android:id="@+id/go_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/go_to_unique_exercise_button"
+        android:layout_below="@+id/add_exercise"
         android:layout_marginTop="20dp"
         android:text="Go Back"
         android:layout_centerHorizontal="true"

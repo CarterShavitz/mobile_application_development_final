@@ -55,4 +55,15 @@ class FrontFragment : Fragment() {
 
         return view
     }
+
+    // Method to update the UI with new calorie values
+    fun updateUIWithCalories(foodCalories: Int, exerciseCalories: Int) {
+        val caloriesConsumedTextView: TextView = view?.findViewById(R.id.calorie_value_text)!!
+        val caloriesBurnedTextView: TextView = view?.findViewById(R.id.calories_burned_text)!!
+
+        // Update the UI with the new calorie values
+        caloriesConsumedTextView.text = foodCalories.toString()
+        caloriesBurnedTextView.text = exerciseCalories.toString()
+    }
+
 }

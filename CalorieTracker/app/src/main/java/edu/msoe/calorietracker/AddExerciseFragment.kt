@@ -21,6 +21,7 @@ class AddExerciseFragment : Fragment() {
 
     private val viewModel: ViewModel by viewModels()
 
+
     companion object {
         fun newInstance(): AddExerciseFragment {
             return AddExerciseFragment()
@@ -31,6 +32,7 @@ class AddExerciseFragment : Fragment() {
     interface OnFragmentInteractionListener {
         fun onGoToUniqueExerciseButtonClick()
         fun onGoBackHomeButtonClick()
+        fun onGoFrontFragment()
     }
 
     private var listener: OnFragmentInteractionListener? = null
@@ -54,6 +56,7 @@ class AddExerciseFragment : Fragment() {
         // Find buttons by their IDs
         val goToUniqueExerciseButton: Button = view.findViewById(R.id.go_to_unique_exercise_button)
         val goBackButton: Button = view.findViewById(R.id.go_back)
+        val goAddExercise: Button = view.findViewById(R.id.add_exercise)
 
         // Set click listeners for the buttons
         goToUniqueExerciseButton.setOnClickListener {
@@ -62,6 +65,10 @@ class AddExerciseFragment : Fragment() {
 
         goBackButton.setOnClickListener {
             listener?.onGoBackHomeButtonClick()
+        }
+
+        goAddExercise.setOnClickListener {
+            listener?.onGoFrontFragment()
         }
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -94,8 +101,7 @@ class AddExerciseFragment : Fragment() {
                             ) {
 
                                 val exercise = exercises[position]
-                                exercise.calories
-
+                                // You can use 'exercise' as needed, e.g., exercise.calories
 
                             }
 

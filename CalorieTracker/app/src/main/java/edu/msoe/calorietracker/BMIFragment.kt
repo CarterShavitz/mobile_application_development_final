@@ -14,6 +14,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import kotlin.math.pow
+import kotlin.math.round
+import kotlin.math.roundToInt
 
 class BMIFragment : Fragment() {
 
@@ -72,6 +74,7 @@ class BMIFragment : Fragment() {
         val calculateBMIButton: Button = view.findViewById(R.id.go_to_calorie_tracking_page)
         val calculateCalorieButton: Button = view.findViewById(R.id.calorie_recom)
 
+
         goBackButton.setOnClickListener {
             listener?.onGoBackHomeButtonClick()
         }
@@ -106,17 +109,13 @@ class BMIFragment : Fragment() {
 
         // Check if any of the input fields is empty
         if (weightStr.isEmpty() && heightFeetStr.isEmpty() && heightInchesStr.isEmpty()) {
-            showToast("Please enter both weight and height.")
+            showToast("Please enter values for weight, height (feet), and height (inches).")
             clearBMIResult() // Clear BMI result
             return
         }
 
         val weight: Double = weightStr.toDoubleOrNull() ?: run {
-            if (weightStr.isEmpty()) {
-                showToast("Please enter weight.")
-            } else {
-                showToast("Please enter a valid weight.")
-            }
+            showToast("Please enter a valid weight.")
             clearBMIResult() // Clear BMI result
             return
         }
@@ -135,14 +134,14 @@ class BMIFragment : Fragment() {
 
         // Check for negative values
         if (weight < 0 || heightFeet < 0 || heightInches < 0) {
-            showToast("Please enter non-negative values for weight and height.")
+            showToast("Please enter non-negative values for weight, height (feet), and height (inches).")
             clearBMIResult() // Clear BMI result
             return
         }
 
-        // Calculate BMI using the formula: weight (kg) / [height (m)]^2
-        val heightInMeters = ((heightFeet * 12) + heightInches) * 0.0254
-        val bmi = weight / (heightInMeters.pow(2))
+        // Calculate BMI using the formula: weight (kg) / [height (in)]^2
+        val heightInInches = (heightFeet * 12) + heightInches
+        val bmi = weight / (heightInInches.pow(2)) * 703 // Multiply by 703 for the BMI calculation with height in inches
 
         // Check if BMI is negative
         if (bmi < 0) {
@@ -154,6 +153,7 @@ class BMIFragment : Fragment() {
         // Pass the calculated BMI to the listener
         listener?.onBMICalculated(bmi)
     }
+
 
     private fun showToast(message: String) {
         context?.let {
@@ -167,12 +167,15 @@ class BMIFragment : Fragment() {
     }
 
     private fun interpretBMI(bmi: Double): String {
+        val epsilon = 0.01 // Small value to handle floating-point imprecision
+
         return when {
-            bmi < 18.5 -> "Underweight"
-            bmi in 18.5..24.9 -> "Healthy Weight"
-            bmi in 25.0..29.9 -> "Overweight"
-            bmi in 30.0..39.9 -> "Obese"
-            bmi >= 40.0 -> "Severely Obese"
+            bmi < 18.5 - epsilon -> "Underweight"
+            bmi in 18.5 - epsilon..24.9 + epsilon -> "Healthy Weight"
+            bmi in 25.0 - epsilon..29.9 + epsilon -> "Overweight"
+            bmi in 30.0 - epsilon..34.9 + epsilon -> "Obese (Class 1)"
+            bmi in 35.0 - epsilon..39.9 + epsilon -> "Obese (Class 2)"
+            bmi >= 40.0 - epsilon -> "Severely Obese"
             else -> "Unknown"
         }
     }
@@ -187,6 +190,7 @@ class BMIFragment : Fragment() {
         val heightFeetStr = heightFeetEditText?.text.toString()
         val heightInchesStr = heightInchesEditText?.text.toString()
         val ageStr = ageEditText?.text.toString()
+
 
         // Check if any of the input fields is empty
         if (weightStr.isEmpty() || heightFeetStr.isEmpty() || heightInchesStr.isEmpty() || ageStr.isEmpty()) {
@@ -221,10 +225,10 @@ class BMIFragment : Fragment() {
             return
         }
 
-        // Calculate BMR using Mifflin-St Jeor Equation
+        // Calculate BMR using Mifflin-St Jeor Equation and round to the nearest integer
         val bmr = calculateBMRMifflinStJeor(weightInput, heightFeetInput, heightInchesInput, ageInput, isMale())
 
-        // Calculate daily calorie estimates based on specified rates
+        // Calculate daily calorie estimates based on specified rates and round to the nearest integer
         val maintainWeightCalories = calculateCalories(bmr, MAINTAIN_WEIGHT_PERCENTAGE)
         val mildWeightLossCalories = calculateCalories(bmr, MILD_WEIGHT_LOSS_PERCENTAGE)
         val weightLossCalories = calculateCalories(bmr, WEIGHT_LOSS_PERCENTAGE)
@@ -248,11 +252,11 @@ class BMIFragment : Fragment() {
 
         val dialog = dialogBuilder.create()
         dialog.show()
+
     }
 
     private fun calculateCalories(bmr: Double, percentage: Int): Int {
-        val calories = ((bmr * percentage) / 100).toInt()
-        return if (calories >= 0) calories else 0
+        return (bmr * percentage / 100.0).roundToInt()
     }
 
     private fun calculateBMRMifflinStJeor(weight: Double, heightFeet: Double, heightInches: Double, age: Double, isMale: Boolean): Double {
@@ -262,10 +266,10 @@ class BMIFragment : Fragment() {
         // Use the Mifflin-St Jeor Equation
         return if (isMale) {
             // BMR for men: 10W + 6.25H - 5A + 5
-            (10 * weight) + (6.25 * heightInCm) - (5 * age) + 5
+            (10 * weight + 6.25 * heightInCm - 5 * age + 5)
         } else {
             // BMR for women: 10W + 6.25H - 5A - 161
-            (10 * weight) + (6.25 * heightInCm) - (5 * age) - 161
+            (10 * weight + 6.25 * heightInCm - 5 * age - 161)
         }
     }
 

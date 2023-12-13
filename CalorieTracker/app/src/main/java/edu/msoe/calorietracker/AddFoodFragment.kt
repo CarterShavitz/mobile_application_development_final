@@ -12,17 +12,16 @@ import androidx.fragment.app.Fragment
 import android.widget.Button
 import android.widget.Spinner
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class AddFoodFragment : Fragment() {
 
     private val viewModel: ViewModel by viewModels()
+
 
     companion object {
         fun newInstance(): AddFoodFragment {
@@ -34,6 +33,7 @@ class AddFoodFragment : Fragment() {
     interface OnFragmentInteractionListener {
         fun onGoToUniqueFoodButtonClick()
         fun onGoBackHomeButtonClick()
+        fun onGoFrontFragment()
     }
 
     private var listener: OnFragmentInteractionListener? = null
@@ -57,6 +57,7 @@ class AddFoodFragment : Fragment() {
         // Find buttons by their IDs
         val goToUniqueFoodButton: Button = view.findViewById(R.id.go_to_unique_food_button)
         val goBackButton: Button = view.findViewById(R.id.go_back)
+        val goAddFood: Button = view.findViewById(R.id.add_food)
 
         // Set click listeners for the buttons
         goToUniqueFoodButton.setOnClickListener {
@@ -65,6 +66,10 @@ class AddFoodFragment : Fragment() {
 
         goBackButton.setOnClickListener {
             listener?.onGoBackHomeButtonClick()
+        }
+
+        goAddFood.setOnClickListener {
+            listener?.onGoFrontFragment()
         }
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -97,8 +102,7 @@ class AddFoodFragment : Fragment() {
                             ) {
 
                                 val food = foods[position]
-                                food.calories
-
+                                // You can use 'food' as needed, e.g., food.calories
 
                             }
 
@@ -112,8 +116,6 @@ class AddFoodFragment : Fragment() {
                     }
                 }
             }
-
-
         }
         return view
     }
