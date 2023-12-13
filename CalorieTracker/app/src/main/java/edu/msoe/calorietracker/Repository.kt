@@ -1,9 +1,13 @@
 package edu.msoe.calorietracker
 
 import android.content.Context
+import androidx.room.Insert
+import androidx.room.Query
 import androidx.room.Room
+import androidx.room.Update
 import edu.msoe.calorietracker.database.Database
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 import java.util.UUID
 
 private const val DATABASE_NAME = "database"
@@ -34,6 +38,14 @@ class Repository private constructor(
     suspend fun updateFood(food: Food) {
         database.classDao().updateFood(food)
     }
+
+
+    suspend fun updateCalories(calories: Calories) = database.classDao().updateCalories(calories)
+
+    suspend fun getCalories(date: Date): Calories = database.classDao().getCalories(date)
+
+    suspend fun addCalories(calories: Calories) = database.classDao().addCalories(calories)
+
 
     companion object {
         private var INSTANCE: Repository? = null
