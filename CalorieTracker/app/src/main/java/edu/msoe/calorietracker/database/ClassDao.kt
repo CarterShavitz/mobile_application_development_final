@@ -4,9 +4,11 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import edu.msoe.calorietracker.Calories
 import edu.msoe.calorietracker.Exercise
 import edu.msoe.calorietracker.Food
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 import java.util.UUID
 @Dao
 interface ClassDao {
@@ -45,4 +47,13 @@ interface ClassDao {
 
     @Update
     fun updateExercise(exercise: Exercise)
+
+    @Update
+    fun updateCalories(calories: Calories)
+
+    @Query("SELECT * FROM calories WHERE date=(:date)")
+    fun getCalories(date: Date): Calories
+
+    @Insert
+    fun addCalories(calories: Calories)
 }

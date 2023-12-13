@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +23,7 @@ import kotlinx.coroutines.withContext
 
 class AddExerciseFragment : Fragment() {
 
-    private val viewModel: ViewModel by viewModels()
+    private val viewModel by activityViewModels<ViewModel>()
 
     companion object {
         fun newInstance(): AddExerciseFragment {
@@ -86,6 +87,16 @@ class AddExerciseFragment : Fragment() {
                     } else {
                         // Handle the case where no exercise is selected
                         null
+                    }
+                    if (selectedExercise != null) {
+                        Log.d("Exercise", selectedExercise.name)
+                    }
+                    Log.d("Exercise", "Before co")
+                    CoroutineScope(Dispatchers.IO).launch {
+                        if (selectedExercise != null) {
+                            Log.d("Exercise", "Enter if")
+                            viewModel.addCaloriesBurned(selectedExercise.calories)
+                        }
                     }
 
                     listener?.onGoFrontFragmentWithBurnedCalories(selectedExercise?.calories ?: 0)
