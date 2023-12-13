@@ -2,6 +2,7 @@ package edu.msoe.calorietracker
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +29,6 @@ import java.util.UUID
 class AddUniqueFoodFragment : Fragment() {
 
     private val viewModel: ViewModel by viewModels()
-    private var foodsCoroutine: Job? = null
 
 
     companion object {
@@ -82,6 +83,8 @@ class AddUniqueFoodFragment : Fragment() {
                 val foodToAdd = Food(UUID.randomUUID(), foodName, calorieCount.toInt(), servingSize.toInt())
                 Log.d("UniqueFood", foodToAdd.name)
                 viewModel.addFood(foodToAdd)
+                Looper.prepare()
+                Toast.makeText(view.context, "Food added: " + foodToAdd.name, Toast.LENGTH_SHORT).show()
             }
         }
 

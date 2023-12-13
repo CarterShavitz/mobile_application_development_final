@@ -26,5 +26,9 @@ class ViewModel() : ViewModel(){
         repository.addFood(food)
     }
 
+    suspend fun addExercise(exercise: Exercise) {
+        repository.addExercise(exercise)
+    }
+
 
 }
