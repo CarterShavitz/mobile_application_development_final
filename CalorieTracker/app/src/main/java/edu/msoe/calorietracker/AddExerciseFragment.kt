@@ -8,19 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.fragment.app.Fragment
 import android.widget.Button
 import android.widget.Spinner
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
 class AddExerciseFragment : Fragment() {
 
     private val viewModel: ViewModel by viewModels()
-
 
     companion object {
         fun newInstance(): AddExerciseFragment {
@@ -32,10 +34,14 @@ class AddExerciseFragment : Fragment() {
     interface OnFragmentInteractionListener {
         fun onGoToUniqueExerciseButtonClick()
         fun onGoBackHomeButtonClick()
-        fun onGoFrontFragment()
+        fun onGoFrontFragmentWithBurnedCalories(burnedCalories: Int)
     }
 
     private var listener: OnFragmentInteractionListener? = null
+
+    // Mutex for synchronizing access to the exercises list
+    private val exercisesMutex = Mutex()
+    private var exercises: List<Exercise> = emptyList()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -56,7 +62,6 @@ class AddExerciseFragment : Fragment() {
         // Find buttons by their IDs
         val goToUniqueExerciseButton: Button = view.findViewById(R.id.go_to_unique_exercise_button)
         val goBackButton: Button = view.findViewById(R.id.go_back)
-        val goAddExercise: Button = view.findViewById(R.id.add_exercise)
 
         // Set click listeners for the buttons
         goToUniqueExerciseButton.setOnClickListener {
@@ -67,22 +72,46 @@ class AddExerciseFragment : Fragment() {
             listener?.onGoBackHomeButtonClick()
         }
 
-        goAddExercise.setOnClickListener {
-            listener?.onGoFrontFragment()
+        // Replace "add_exercise_button" with the actual ID of your button
+        val addExerciseButton: Button = view.findViewById(R.id.add_exercise)
+
+        addExerciseButton.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                // Use the mutex to ensure proper synchronization
+                exercisesMutex.withLock {
+                    val spinner: Spinner = view.findViewById(R.id.common_exercise_spinner)
+                    val selectedPosition = spinner.selectedItemPosition
+                    val selectedExercise = if (selectedPosition != AdapterView.INVALID_POSITION) {
+                        exercises[selectedPosition]
+                    } else {
+                        // Handle the case where no exercise is selected
+                        null
+                    }
+
+                    listener?.onGoFrontFragmentWithBurnedCalories(selectedExercise?.calories ?: 0)
+                }
+            }
         }
 
         CoroutineScope(Dispatchers.IO).launch {
             Log.d("Exercise", "Start coroutine")
 
-            var exercises: List<Exercise> = emptyList()
             viewModel.exercises.collect { exerciseList ->
-                exercises = exerciseList
+                // Use the mutex to ensure proper synchronization
+                exercisesMutex.withLock {
+                    exercises = exerciseList
+                }
+
                 val exerciseNames = ArrayList<String>()
                 withContext(Dispatchers.Main) {
                     Log.d("Exercise", "Main context")
-                    for (exercise: Exercise in exercises) {
-                        exerciseNames.add(exercise.name)
+                    // Use the mutex to ensure proper synchronization
+                    exercisesMutex.withLock {
+                        for (exercise: Exercise in exercises) {
+                            exerciseNames.add(exercise.name)
+                        }
                     }
+
                     if (isAdded) {
                         val spinner: Spinner = view.findViewById(R.id.common_exercise_spinner)
                         val adapter = ArrayAdapter(
@@ -99,17 +128,13 @@ class AddExerciseFragment : Fragment() {
                                 position: Int,
                                 id: Long
                             ) {
-
-                                val exercise = exercises[position]
                                 // You can use 'exercise' as needed, e.g., exercise.calories
-
                             }
 
                             override fun onNothingSelected(parent: AdapterView<*>?) {
                                 // Do nothing
                             }
                         }
-
                     } else {
                         Log.d("Exercise", "Fragment not attached yet, delay")
                     }

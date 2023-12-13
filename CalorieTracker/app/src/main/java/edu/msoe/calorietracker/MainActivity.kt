@@ -92,21 +92,18 @@ class MainActivity : AppCompatActivity(),
         bmiFragment?.displayBMIResult(bmi)
     }
 
-    override fun onGoFrontFragment() {
-        // Implement the onGoFrontFragment method
-        val foodFragment = supportFragmentManager.findFragmentByTag("addFood") as AddFoodFragment?
-        foodFragment?.let {
-            // Perform any necessary actions before navigating back to the FrontFragment
-            // For example, you can update the calories in the FrontFragment based on the selected food and exercise
-            //val selectedFoodCalories = it.getSelectedFoodCalories()
-            //val selectedExerciseCalories = it.getSelectedExerciseCalories()
-
-            // Call the updateCalories method in FrontFragment
-            //val frontFragment = supportFragmentManager.findFragmentByTag("frontFragment") as FrontFragment?
-            //frontFragment?.updateUIWithCalories(selectedFoodCalories, selectedExerciseCalories)
-        }
-
-        // Navigate back to the FrontFragment
-        supportFragmentManager.popBackStack("frontFragment", 0)
+    override fun onGoFrontFragmentWithConsumedCalories(consumedCalories: Int) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, FrontFragment.newInstance(), "addUniqueFood")
+            .addToBackStack(null)  // Add to back stack to handle popBackStack
+            .commit()
     }
+
+    override fun onGoFrontFragmentWithBurnedCalories(burnedCalories: Int) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, FrontFragment.newInstance(), "addUniqueFood")
+            .addToBackStack(null)  // Add to back stack to handle popBackStack
+            .commit()
+    }
+
 }
